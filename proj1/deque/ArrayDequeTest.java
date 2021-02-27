@@ -124,4 +124,21 @@ public class ArrayDequeTest {
             assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
         }
     }
+
+    @Test
+    public void fillUpEmptyFillUpAgain() {
+        ArrayDeque<Integer> L = new ArrayDeque<>();
+
+        for (int i = 0; i < 8; i += 1) {
+            L.addLast(i);
+        }
+        for (int j = 0; j < 8; j += 1) {
+            L.removeLast();
+        }
+        for (int i = 0; i < 8; i += 1) {
+            L.addLast(i);
+        }
+        assertEquals(L, L);
+        assertEquals(8, L.size());
+    }
 }

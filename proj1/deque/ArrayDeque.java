@@ -107,8 +107,8 @@ public class ArrayDeque<T> {
         }
         int last = nextLast - 1;
         T temp;
-        if (last == items.length) {
-            last = 0;
+        if (last < 0) {
+            last = items.length - 1;
         }
         temp = items[last];
         items[last] = null;
