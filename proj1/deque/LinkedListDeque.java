@@ -56,10 +56,7 @@ public class LinkedListDeque<T> {
 
     /** Returns true if deque is empty, false otherwise. */
     public boolean isEmpty() {
-        if (size == 0) {
-            return true;
-        }
-        return false;
+        return size == 0;
     }
 
     /** Returns the number of items in the deque. */
@@ -115,20 +112,31 @@ public class LinkedListDeque<T> {
         return p.item;
     }
 
+    /**  The Deque objects we’ll make are iterable. */
+//    public Iterator<T> iterator() {
+//
+//    }
+
+    /** Returns whether or not the parameter o is equal to the Deque. */
+//    public boolean equals(Object o) {
+//
+//    }
+
     /**  Same as get, but uses recursion. */
     public T getRecursive(int index) {
         if (index >= size || index < 0) {
             return null;
         }
         StuffNode p = sentinel.next;
-        return getHelper(index,p);
+        return Helper(index,p);
     }
 
-    private T getHelper(int index, StuffNode p) {
+    /** Helper method of getRecursive. */
+    private T Helper(int index, StuffNode p) {
         if (index == 0) {
             return p.item;
         }
-        return getHelper(index - 1, p.next);
+        return Helper(index - 1, p.next);
     }
 
 }
