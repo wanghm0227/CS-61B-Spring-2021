@@ -46,11 +46,7 @@ public class ArrayDeque<T> {
     /** Adds an item of type T to the back of the deque. */
     public void addLast(T item) {
         items[nextLast] = item;
-        if (nextLast == items.length - 1) {
-            nextLast = 0;
-        } else {
-            nextLast += 1;
-        }
+        nextLast = (nextLast + 1) % items.length;
         size += 1;
     }
 
@@ -67,10 +63,7 @@ public class ArrayDeque<T> {
     /** Prints the items in the deque from first to last, separated by a space. */
     public void printDeque() {
         for (int i = nextFirst + 1; i < size; i += 1) {
-            if (i == items.length) {
-                i = 0;
-            }
-            System.out.print(items[i] + " ");
+            System.out.print(items[i % items.length] + " ");
         }
         System.out.println();
     }
@@ -84,15 +77,10 @@ public class ArrayDeque<T> {
         if ((size < items.length / 4) && (size > 16)) {
             resize(items.length / 4);
         }
-        int first = nextFirst + 1;
         T temp;
-        if (first == items.length) {
-            first = 0;
-        }
-        temp = items[first];
-        items[first] = null;
-        nextFirst += 1;
-        size -= 1;
+        temp = items[(nextFirst + 1) % items.length];
+        nextFirst = (nextFirst + 1) % items.length;
+        size = size - 1;
         return temp;
     }
 
@@ -105,15 +93,17 @@ public class ArrayDeque<T> {
         if ((size < items.length / 4) && (size > 16)) {
             resize(items.length / 4);
         }
-        int last = nextLast - 1;
         T temp;
-        if (last < 0) {
-            last = items.length - 1;
+        if (nextLast - 1 < 0) {
+            temp = items[items.length - 1];
+            items[items.length - 1] = null;
+            nextLast = items.length - 1;
+        } else {
+            temp = items[nextLast - 1];
+            items[nextLast - 1] = null;
+            nextLast = nextLast - 1;
         }
-        temp = items[last];
-        items[last] = null;
-        nextLast -= 1;
-        size -= 1;
+        size = size - 1;
         return temp;
     }
 
@@ -121,6 +111,8 @@ public class ArrayDeque<T> {
      *  If no such item exists, returns null.
      */
     public T get(int index) {
-        return items[index];
+        int first = nextFirst + 1;
+        int pos = (first + index) % items.length;
+        return items[pos];
     }
 }
