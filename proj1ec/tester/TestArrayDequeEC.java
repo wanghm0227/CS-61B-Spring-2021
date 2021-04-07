@@ -9,48 +9,48 @@ import static org.junit.Assert.assertEquals;
 public class TestArrayDequeEC {
     @Test
     public void randomizedRemoveFirstTest() {
-        StudentArrayDeque<Integer> sad = new StudentArrayDeque<>();
-        ArrayDequeSolution<Integer> ad = new ArrayDequeSolution<>();
+        StudentArrayDeque<Integer> student = new StudentArrayDeque<>();
+        ArrayDequeSolution<Integer> solution = new ArrayDequeSolution<>();
 
         for (int i = 0; i < 10; i += 1) {
             double numberBetweenZeroAndOne = StdRandom.uniform();
 
             if (numberBetweenZeroAndOne < 0.5) {
-                sad.addLast(i);
-                ad.addLast(i);
+                student.addLast(i);
+                solution.addLast(i);
             } else {
-                sad.addFirst(i);
-                ad.addFirst(i);
+                student.addFirst(i);
+                solution.addFirst(i);
             }
         }
 
         for (int j = 0; j < 10; j += 1) {
-            Integer expected = ad.removeFirst();
-            Integer actual = sad.removeFirst();
+            Integer expected = solution.removeFirst();
+            Integer actual = student.removeFirst();
             assertEquals("Expected: " + expected + " but got: " + actual, expected, actual);
         }
     }
 
     @Test
     public void randomizedRemoveLastTest() {
-        StudentArrayDeque<Integer> sad = new StudentArrayDeque<>();
-        ArrayDequeSolution<Integer> ad = new ArrayDequeSolution<>();
+        StudentArrayDeque<Integer> student = new StudentArrayDeque<>();
+        ArrayDequeSolution<Integer> solution = new ArrayDequeSolution<>();
 
         for (int i = 0; i < 10; i += 1) {
             double numberBetweenZeroAndOne = StdRandom.uniform();
 
             if (numberBetweenZeroAndOne < 0.5) {
-                sad.addLast(i);
-                ad.addLast(i);
+                student.addLast(i);
+                solution.addLast(i);
             } else {
-                sad.addFirst(i);
-                ad.addFirst(i);
+                student.addFirst(i);
+                solution.addFirst(i);
             }
         }
 
         for (int j = 0; j < 10; j += 1) {
-            Integer expected = ad.removeLast();
-            Integer actual = sad.removeLast();
+            Integer expected = solution.removeLast();
+            Integer actual = student.removeLast();
             assertEquals("Expected: " + expected + " but got: " + actual, expected, actual);
             }
         }
