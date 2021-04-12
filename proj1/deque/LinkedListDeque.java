@@ -2,7 +2,7 @@ package deque;
 
 import edu.princeton.cs.algs4.ST;
 
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Deque<T> {
     private class StuffNode {
         public T item;
         public StuffNode next;
@@ -52,11 +52,6 @@ public class LinkedListDeque<T> {
         sentinel.prev.next = s;
         sentinel.prev = s;
         size += 1;
-    }
-
-    /** Returns true if deque is empty, false otherwise. */
-    public boolean isEmpty() {
-        return size == 0;
     }
 
     /** Returns the number of items in the deque. */

@@ -1,6 +1,6 @@
 package deque;
 
-public class ArrayDeque<T> {
+public class ArrayDeque<T> implements Deque<T> {
     T[] items;
     int size;
     int nextFirst;
@@ -17,42 +17,53 @@ public class ArrayDeque<T> {
     /** Resizes the underlying array to the target capacity. */
     private void resize(int capacity) {
         T[] a = (T[]) new Object[capacity];
+        int tempIndex = nextFirst + 1;
         for (int i = 0; i < size; i += 1) {
-            a[i] = items[i];
+            if (tempIndex == size) {
+                tempIndex = 0;
+            }
+            if(items[tempIndex] != null) {
+                a[i] = items[tempIndex];
+            }
+            tempIndex += 1;
         }
+        nextFirst = a.length - 1;
+        nextLast = size;
         items = a;
     }
 
     /** Creates a deep copy of other. */
-//    public ArrayDeque(ArrayDeque other) {
-//        items = (T[]) new Object[8];
-//        size = 0;
-//        nextFirst = 0;
-//        nextLast = 1;
-//        System.arraycopy(other,0, this,0,8);
-//    }
+    public ArrayDeque(ArrayDeque other) {
+        items = (T[]) new Object[size];
+        size = 0;
+        nextFirst = 0;
+        nextLast = 1;
+        System.arraycopy(other,0, this,0,8);
+    }
 
     /**  Adds an item of type T to the front of the deque. */
     public void addFirst(T item) {
         items[nextFirst] = item;
+        size += 1;
         if (nextFirst == 0) {
             nextFirst = items.length - 1;
         } else {
             nextFirst -= 1;
         }
-        size += 1;
+        if (size == items.length) {
+            resize(size * 2);
+        }
     }
 
     /** Adds an item of type T to the back of the deque. */
     public void addLast(T item) {
         items[nextLast] = item;
-        nextLast = (nextLast + 1) % items.length;
         size += 1;
-    }
+        nextLast = (nextLast + 1) % items.length;
+        if (size == items.length) {
+            resize(size * 2);
+        }
 
-    /** Returns true if deque is empty, false otherwise. */
-    public boolean isEmpty() {
-        return size == 0;
     }
 
     /** Returns the number of items in the deque. */
@@ -79,6 +90,7 @@ public class ArrayDeque<T> {
         }
         T temp;
         temp = items[(nextFirst + 1) % items.length];
+        items[(nextFirst + 1) % items.length] = null;
         nextFirst = (nextFirst + 1) % items.length;
         size = size - 1;
         return temp;
