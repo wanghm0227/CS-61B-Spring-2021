@@ -1,5 +1,7 @@
 package deque;
 
+import java.util.Iterator;
+
 public class LinkedListDeque<T> implements Deque<T> {
     private final StuffNode sentinel;
     private int size;
@@ -119,35 +121,76 @@ public class LinkedListDeque<T> implements Deque<T> {
             return null;
         }
         StuffNode p = sentinel.next;
-        return HELPER(index, p);
+        return Helper(index, p);
     }
 
-    /**  The Deque objects we’ll make are iterable. */
-//    public Iterator<T> iterator() {
-//
-//    }
+    /**
+     * The Deque objects we’ll make are iterable.
+     */
+    public Iterator<T> iterator() {
+        return new LinkedListDequeIterator();
+    }
 
+    @Override
     /** Returns whether or not the parameter o is equal to the Deque. */
-//    public boolean equals(Object o) {
-//
-//    }
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof Deque)) {
+            return false;
+        }
+
+        LinkedListDeque<T> other = (LinkedListDeque<T>) o;
+        if (other.size != this.size) {
+            return false;
+        }
+        for (int i = 0; i < size; i += 1) {
+            if (this.get(i) != other.get(i)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * Helper method of getRecursive.
      */
-    private T HELPER(int index, StuffNode p) {
+    private T Helper(int index, StuffNode p) {
         if (index == 0) {
             return p.item;
         }
-        return HELPER(index - 1, p.next);
+        return Helper(index - 1, p.next);
+    }
+
+    private class LinkedListDequeIterator implements Iterator<T> {
+        private StuffNode p;
+
+        public LinkedListDequeIterator() {
+            p = sentinel;
+        }
+
+        public boolean hasNext() {
+            return p != sentinel;
+        }
+
+        public T next() {
+            T returnItem = p.next.item;
+            p = p.next;
+            return returnItem;
+        }
     }
 
     private class StuffNode {
-        public T item;
-        public StuffNode next;
-        public StuffNode prev;
+        private final T item;
+        private StuffNode next;
+        private StuffNode prev;
 
-        public StuffNode(T i, StuffNode n, StuffNode p) {
+        StuffNode(T i, StuffNode n, StuffNode p) {
             item = i;
             next = n;
             prev = p;

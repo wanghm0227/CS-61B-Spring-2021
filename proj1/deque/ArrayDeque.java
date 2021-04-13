@@ -1,5 +1,7 @@
 package deque;
 
+import java.util.Iterator;
+
 public class ArrayDeque<T> implements Deque<T> {
     T[] items;
     int size;
@@ -14,6 +16,17 @@ public class ArrayDeque<T> implements Deque<T> {
         size = 0;
         nextFirst = 0;
         nextLast = 1;
+    }
+
+    /**
+     * Creates a deep copy of other.
+     */
+    public ArrayDeque(ArrayDeque other) {
+        items = (T[]) new Object[size];
+        size = 0;
+        nextFirst = 0;
+        nextLast = 1;
+        System.arraycopy(other, 0, this, 0, 8);
     }
 
     /**
@@ -34,17 +47,6 @@ public class ArrayDeque<T> implements Deque<T> {
         nextFirst = a.length - 1;
         nextLast = size;
         items = a;
-    }
-
-    /**
-     * Creates a deep copy of other.
-     */
-    public ArrayDeque(ArrayDeque other) {
-        items = (T[]) new Object[size];
-        size = 0;
-        nextFirst = 0;
-        nextLast = 1;
-        System.arraycopy(other, 0, this, 0, 8);
     }
 
     /**
@@ -145,5 +147,55 @@ public class ArrayDeque<T> implements Deque<T> {
         int first = nextFirst + 1;
         int pos = (first + index) % items.length;
         return items[pos];
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof Deque)) {
+            return false;
+        }
+
+        ArrayDeque<T> other = (ArrayDeque<T>) o;
+        if (other.size != this.size) {
+            return false;
+        }
+        for (int i = 0; i < size; i += 1) {
+            if (this.get(i) != other.get(i)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * The Deque objects we’ll make are iterable.
+     */
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
+
+    private class ArrayDequeIterator implements Iterator<T> {
+        private int pos;
+
+        public ArrayDequeIterator() {
+            pos = nextFirst + 1;
+        }
+
+        public boolean hasNext() {
+            return pos != nextLast;
+        }
+
+        public T next() {
+            T returnItem = items[pos];
+            pos = pos + 1;
+            return returnItem;
+        }
     }
 }
