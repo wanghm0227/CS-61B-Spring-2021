@@ -1,32 +1,22 @@
 package deque;
 
-import edu.princeton.cs.algs4.ST;
-
 public class LinkedListDeque<T> implements Deque<T> {
-    private class StuffNode {
-        public T item;
-        public StuffNode next;
-        public StuffNode prev;
-
-        public StuffNode(T i, StuffNode n, StuffNode p) {
-            item = i;
-            next = n;
-            prev = p;
-        }
-    }
-
-    private StuffNode sentinel;
+    private final StuffNode sentinel;
     private int size;
 
-    /** Creates an empty linked list deque. */
-     public LinkedListDeque() {
+    /**
+     * Creates an empty linked list deque.
+     */
+    public LinkedListDeque() {
         sentinel = new StuffNode(null, null, null);
         sentinel.next = sentinel;
         sentinel.prev = sentinel;
         size = 0;
     }
 
-    /** Creates a deep copy of other. */
+    /**
+     * Creates a deep copy of other.
+     */
     public LinkedListDeque(LinkedListDeque<T> other) {
         sentinel = new StuffNode(null, null, null);
         sentinel.next = sentinel;
@@ -38,7 +28,9 @@ public class LinkedListDeque<T> implements Deque<T> {
         }
     }
 
-    /** Adds an item of type T to the front of the deque. */
+    /**
+     * Adds an item of type T to the front of the deque.
+     */
     public void addFirst(T item) {
         StuffNode s = new StuffNode(item, sentinel.next, sentinel);
         sentinel.next.prev = s;
@@ -46,7 +38,9 @@ public class LinkedListDeque<T> implements Deque<T> {
         size += 1;
     }
 
-    /** Adds an item of type T to the back of the deque. */
+    /**
+     * Adds an item of type T to the back of the deque.
+     */
     public void addLast(T item) {
         StuffNode s = new StuffNode(item, sentinel, sentinel.prev);
         sentinel.prev.next = s;
@@ -54,12 +48,16 @@ public class LinkedListDeque<T> implements Deque<T> {
         size += 1;
     }
 
-    /** Returns the number of items in the deque. */
+    /**
+     * Returns the number of items in the deque.
+     */
     public int size() {
         return size;
     }
 
-    /** Prints the items in the deque from first to last, separated by a space. */
+    /**
+     * Prints the items in the deque from first to last, separated by a space.
+     */
     public void printDeque() {
         StuffNode p = sentinel.next;
         while (p != sentinel) {
@@ -69,7 +67,9 @@ public class LinkedListDeque<T> implements Deque<T> {
         System.out.println();
     }
 
-    /** Removes and returns the item at the front of the deque. If no such item exists, returns null. */
+    /**
+     * Removes and returns the item at the front of the deque. If no such item exists, returns null.
+     */
     public T removeFirst() {
         if (size == 0) {
             return null;
@@ -81,7 +81,9 @@ public class LinkedListDeque<T> implements Deque<T> {
         return temp;
     }
 
-    /** Removes and returns the item at the back of the deque. If no such item exists, returns null. */
+    /**
+     * Removes and returns the item at the back of the deque. If no such item exists, returns null.
+     */
     public T removeLast() {
         if (size == 0) {
             return null;
@@ -93,8 +95,10 @@ public class LinkedListDeque<T> implements Deque<T> {
         return temp;
     }
 
-    /** Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
-     *  If no such item exists, returns null. */
+    /**
+     * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
+     * If no such item exists, returns null.
+     */
     public T get(int index) {
         int i = 0;
         StuffNode p = sentinel.next;
@@ -107,6 +111,17 @@ public class LinkedListDeque<T> implements Deque<T> {
         return p.item;
     }
 
+    /**
+     * Same as get, but uses recursion.
+     */
+    public T getRecursive(int index) {
+        if (index >= size || index < 0) {
+            return null;
+        }
+        StuffNode p = sentinel.next;
+        return HELPER(index, p);
+    }
+
     /**  The Deque objects we’ll make are iterable. */
 //    public Iterator<T> iterator() {
 //
@@ -117,21 +132,26 @@ public class LinkedListDeque<T> implements Deque<T> {
 //
 //    }
 
-    /**  Same as get, but uses recursion. */
-    public T getRecursive(int index) {
-        if (index >= size || index < 0) {
-            return null;
-        }
-        StuffNode p = sentinel.next;
-        return Helper(index,p);
-    }
-
-    /** Helper method of getRecursive. */
-    private T Helper(int index, StuffNode p) {
+    /**
+     * Helper method of getRecursive.
+     */
+    private T HELPER(int index, StuffNode p) {
         if (index == 0) {
             return p.item;
         }
-        return Helper(index - 1, p.next);
+        return HELPER(index - 1, p.next);
+    }
+
+    private class StuffNode {
+        public T item;
+        public StuffNode next;
+        public StuffNode prev;
+
+        public StuffNode(T i, StuffNode n, StuffNode p) {
+            item = i;
+            next = n;
+            prev = p;
+        }
     }
 
 }
