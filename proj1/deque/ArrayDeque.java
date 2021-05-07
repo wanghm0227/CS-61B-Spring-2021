@@ -1,12 +1,13 @@
 package deque;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayDeque<T> implements Deque<T> {
-    T[] items;
-    int size;
-    int nextFirst;
-    int nextLast;
+    private T[] items;
+    private int size;
+    private int nextFirst;
+    private int nextLast;
 
     /**
      * Creates an empty array deque.
@@ -150,21 +151,22 @@ public class ArrayDeque<T> implements Deque<T> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object otherObject) {
+        if (this == otherObject) {
             return true;
         }
-        if (o == null) {
+        if (otherObject == null) {
             return false;
         }
-        if (!(o instanceof Deque)) {
+        if (this.getClass() != otherObject.getClass()) {
             return false;
         }
 
-        ArrayDeque<T> other = (ArrayDeque<T>) o;
-        if (other.size != this.size) {
+        ArrayDeque<T> other = (ArrayDeque<T>) otherObject;
+        if (this.size != other.size) {
             return false;
         }
+
         for (int i = 0; i < size; i += 1) {
             if (this.get(i) != other.get(i)) {
                 return false;
@@ -181,18 +183,23 @@ public class ArrayDeque<T> implements Deque<T> {
         return new ArrayDequeIterator();
     }
 
-    private class ArrayDequeIterator implements Iterator<T> {
+    public class ArrayDequeIterator implements Iterator<T> {
         private int pos;
 
-        public ArrayDequeIterator() {
+        ArrayDequeIterator() {
             pos = nextFirst + 1;
         }
 
+        @Override
         public boolean hasNext() {
             return pos != nextLast;
         }
 
+        @Override
         public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
             T returnItem = items[pos];
             pos = pos + 1;
             return returnItem;

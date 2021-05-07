@@ -58,7 +58,7 @@ public class ArrayDequeTest {
     public void removeEmptyTest() {
 
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-        ArrayDeque<Integer> lld1 = new ArrayDeque<>();
+        ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
         lld1.addFirst(3);
 
         lld1.removeLast();
@@ -127,7 +127,7 @@ public class ArrayDequeTest {
 
     @Test
     public void fillUpEmptyFillUpAgain() {
-        ArrayDeque<Integer> L = new ArrayDeque<>();
+        ArrayDeque<Integer> L = new ArrayDeque<Integer>();
 
         for (int i = 0; i < 8; i += 1) {
             L.addLast(i);

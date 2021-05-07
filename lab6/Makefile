@@ -18,11 +18,12 @@
 # Name of package containing main procedure 
 PACKAGE = capers
 
+
 # The name of the Python 3 program, used in the 'check' target.  If your system
 # has a different name for this program (such as just "python"), run
 # the Makefile with
 #	make PYTHON=python check
-PYTHON = python3
+PYTHON = python
 
 # Flags to pass to tester.py.
 TESTER_FLAGS =

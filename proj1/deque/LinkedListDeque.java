@@ -1,6 +1,7 @@
 package deque;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedListDeque<T> implements Deque<T> {
     private final StuffNode sentinel;
@@ -121,7 +122,7 @@ public class LinkedListDeque<T> implements Deque<T> {
             return null;
         }
         StuffNode p = sentinel.next;
-        return Helper(index, p);
+        return RecursiveHelper(index, p);
     }
 
     /**
@@ -133,18 +134,18 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     @Override
     /** Returns whether or not the parameter o is equal to the Deque. */
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object otherObject) {
+        if (this == otherObject) {
             return true;
         }
-        if (o == null) {
+        if (otherObject == null) {
             return false;
         }
-        if (!(o instanceof Deque)) {
+        if (this.getClass() != otherObject.getClass()) {
             return false;
         }
 
-        LinkedListDeque<T> other = (LinkedListDeque<T>) o;
+        LinkedListDeque<T> other = (LinkedListDeque<T>) otherObject;
         if (other.size != this.size) {
             return false;
         }
@@ -160,25 +161,30 @@ public class LinkedListDeque<T> implements Deque<T> {
     /**
      * Helper method of getRecursive.
      */
-    private T Helper(int index, StuffNode p) {
+    private T RecursiveHelper(int index, StuffNode p) {
         if (index == 0) {
             return p.item;
         }
-        return Helper(index - 1, p.next);
+        return RecursiveHelper(index - 1, p.next);
     }
 
     private class LinkedListDequeIterator implements Iterator<T> {
         private StuffNode p;
 
-        public LinkedListDequeIterator() {
+        LinkedListDequeIterator() {
             p = sentinel;
         }
 
+        @Override
         public boolean hasNext() {
             return p != sentinel;
         }
 
+        @Override
         public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
             T returnItem = p.next.item;
             p = p.next;
             return returnItem;
